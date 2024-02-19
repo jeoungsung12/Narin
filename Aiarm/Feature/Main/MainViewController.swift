@@ -14,6 +14,12 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
     private let disposeBag = DisposeBag()
     private let mainViewModel = MainViewModel()
     private let locationManager = CLLocationManager()
+    private let loadingIndicator : UIActivityIndicatorView = {
+        let view = UIActivityIndicatorView()
+        view.color = .gray
+        view.style = .large
+        return view
+    }()
     //설정 버튼
     private let settingBtn : UIBarButtonItem = {
         let setting = UIButton()
@@ -43,14 +49,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
         text.isEditable = false
         text.textColor = .gray
         text.font = UIFont.boldSystemFont(ofSize: 24)
-        text.text = "최고 15도\n최저 3도"
+        text.text = "-"
         text.backgroundColor = .pointColor
         return text
     }()
     //대략적인 날씨
     private let weather : UILabel = {
         let label = UILabel()
-        label.text = "맑음"
+        label.text = "-"
         label.textColor = .black
         label.backgroundColor = .pointColor
         label.font = UIFont.boldSystemFont(ofSize: 45)
@@ -62,14 +68,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
         view.backgroundColor = .pointColor
-        view.image = UIImage(named: "sunny")
+        view.image = UIImage(systemName: "")
         return view
     }()
     //현재위치
     private let location : UILabel = {
         let label = UILabel()
         label.backgroundColor = .pointColor
-        label.text = "서울특별시"
+        label.text = "-"
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = .gray
         label.textAlignment = .left
@@ -121,6 +127,7 @@ extension MainViewController {
         self.view.addSubview(temprange)
         self.view.addSubview(weather)
         self.view.addSubview(weatherImage)
+        self.view.addSubview(loadingIndicator)
         self.view.addSubview(location)
         
         //목소리 뷰
@@ -158,6 +165,12 @@ extension MainViewController {
         weatherImage.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(0)
             make.height.equalTo(160)
+            make.center.equalToSuperview()
+        }
+        loadingIndicator.snp.makeConstraints { make in
+            make.height.equalTo(30)
+            make.top.equalTo(weatherImage.snp.bottom).offset(0)
+            make.leading.trailing.equalToSuperview().inset(0)
         }
         location.snp.makeConstraints { make in
             make.top.equalTo(weatherImage.snp.bottom).offset(30)
@@ -169,9 +182,10 @@ extension MainViewController {
             make.leading.trailing.bottom.equalToSuperview().inset(0)
             make.height.equalTo(200)
         }
+        self.loadingIndicator.startAnimating()
     }
     private func AddVoiceStackView() {
-        let voiceList : [String] = ["아이유","수지","지코","지디","김민석"]
+        let voiceList : [String] = ["아이유","수지","지디","김민석"]
         let btnColors : [UIColor] = [.voiceColor1,.voiceColor2,.voiceColor3,.voiceColor4,.pointColor]
         var index = 0
         voiceList.forEach { voice in
@@ -190,6 +204,20 @@ extension MainViewController {
             make.top.bottom.leading.trailing.equalToSuperview().inset(0)
         }
     }
+    @objc func Alert() {
+        let Alert = UIAlertController(title: "설정", message: nil, preferredStyle: .alert)
+        let timeChange = UIAlertAction(title: "시간 변경", style: .default){ _ in
+            self.navigationController?.pushViewController(SaveTimeViewController(), animated: true)
+        }
+        let logout = UIAlertAction(title: "로그아웃", style: .default){ _ in
+            self.navigationController?.pushViewController(LoginViewController(), animated: true)
+        }
+        let cancel = UIAlertAction(title: "취소", style: .destructive)
+        Alert.addAction(timeChange)
+        Alert.addAction(logout)
+        Alert.addAction(cancel)
+        self.present(Alert, animated: true)
+    }
 }
 //MARK: - 바인딩 설정
 extension MainViewController {
@@ -204,13 +232,39 @@ extension MainViewController {
                 })
                 .disposed(by: disposeBag)
         }
+        if let button = settingBtn.customView as? UIButton {
+            button.rx.tap
+                .subscribe(onNext: { [weak self] in
+                    self?.Alert()
+                })
+                .disposed(by: disposeBag)
+        }
+        mainViewModel.outputResult.subscribe(onNext: { result in
+            DispatchQueue.main.async {
+                self.temprange.text = "최고 \(result.HighTemp)\n최저 \(result.LowTemp)"
+                self.weather.text = "\(result.Temp)"
+                self.weatherImage.image = UIImage(systemName: "\(result.symbol)")
+                self.loadingIndicator.stopAnimating()
+            }
+        })
+        .disposed(by: disposeBag)
+        mainViewModel.locationResult.subscribe(onNext: { location in
+            DispatchQueue.main.async {
+                self.location.text = location
+            }
+        })
+        .disposed(by: disposeBag)
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            if let location = locations.first {
-                mainViewModel.inputTrigger.onNext(location)
-            }
+        if let location = locations.first {
+            mainViewModel.inputTrigger.onNext(location)
+        }else{
+            //에러가 났을 경우 다시 요청
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.requestLocation()
         }
-
+    }
+    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to find user's location: \(error.localizedDescription)")
     }

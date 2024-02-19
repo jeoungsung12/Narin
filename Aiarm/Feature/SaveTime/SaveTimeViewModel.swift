@@ -12,22 +12,16 @@ import RxCocoa
 
 class SaveTimeViewModel {
     private let disposeBag = DisposeBag()
-    private let mainViewModel : MainViewModel
-    //알람 제목, 시간값, 요일, 목소리
-    let addAlarm : BehaviorSubject<AddAlarmModel> = BehaviorSubject(value: AddAlarmModel(title: "", date: Date(), days: [""], voice: ""))
+    let inputTrigger = PublishSubject<String>()
+    let outputResult : PublishSubject<Void> = PublishSubject()
     
-    init(mainViewModel : MainViewModel) {
-        self.mainViewModel = mainViewModel
+    init() {
         setBinding()
     }
     func setBinding() {
-        
-    }
-}
-//MARK: - 추가알람 설정(저장버튼 클릭시) 통신서비스 호출
-extension SaveTimeViewModel {
-    private func AddAlarmServiceCalled(){
-        print("AddAlarmServiceCalled - called()")
-        
+        inputTrigger.subscribe(onNext: { selectedTime in
+            UserDefaults.standard.setValue(selectedTime, forKey: "SaveTime")
+        })
+        .disposed(by: disposeBag)
     }
 }

@@ -19,14 +19,12 @@
 		E477C8A42B714DB100D3DDB9 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = E477C8A32B714DB100D3DDB9 /* RxRelay */; };
 		E477C8A62B714DB100D3DDB9 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = E477C8A52B714DB100D3DDB9 /* RxSwift */; };
 		E477C8A92B714F0B00D3DDB9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = E477C8A82B714F0B00D3DDB9 /* SnapKit */; };
-		E477C8AB2B7150F100D3DDB9 /* AlarmTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C8AA2B7150F100D3DDB9 /* AlarmTableViewCell.swift */; };
 		E477C8AE2B71516100D3DDB9 /* SaveTimeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C8AD2B71516100D3DDB9 /* SaveTimeViewController.swift */; };
 		E477C8B02B71516B00D3DDB9 /* SaveTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C8AF2B71516B00D3DDB9 /* SaveTimeViewModel.swift */; };
-		E477C8B32B720C5000D3DDB9 /* AlarmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C8B22B720C5000D3DDB9 /* AlarmModel.swift */; };
-		E477C8B52B73781300D3DDB9 /* AddAlarmModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C8B42B73781300D3DDB9 /* AddAlarmModel.swift */; };
 		E477C9E62B7F568300D3DDB9 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9E52B7F568200D3DDB9 /* LoginViewController.swift */; };
 		E477C9E82B7F568A00D3DDB9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9E72B7F568A00D3DDB9 /* LoginViewModel.swift */; };
 		E477C9EE2B81EAB400D3DDB9 /* WeatherFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9ED2B81EAB400D3DDB9 /* WeatherFetch.swift */; };
+		E477C9F12B83411000D3DDB9 /* weatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9F02B83411000D3DDB9 /* weatherModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,15 +38,13 @@
 		E477C8972B71418500D3DDB9 /* Color.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Color.xcassets; sourceTree = "<group>"; };
 		E477C89A2B71423100D3DDB9 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E477C89C2B7142B500D3DDB9 /* Color+Extensioin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extensioin.swift"; sourceTree = "<group>"; };
-		E477C8AA2B7150F100D3DDB9 /* AlarmTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmTableViewCell.swift; sourceTree = "<group>"; };
 		E477C8AD2B71516100D3DDB9 /* SaveTimeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimeViewController.swift; sourceTree = "<group>"; };
 		E477C8AF2B71516B00D3DDB9 /* SaveTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimeViewModel.swift; sourceTree = "<group>"; };
-		E477C8B22B720C5000D3DDB9 /* AlarmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmModel.swift; sourceTree = "<group>"; };
-		E477C8B42B73781300D3DDB9 /* AddAlarmModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAlarmModel.swift; sourceTree = "<group>"; };
 		E477C9E52B7F568200D3DDB9 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E477C9E72B7F568A00D3DDB9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E477C9E92B80A1C800D3DDB9 /* Aiarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Aiarm.entitlements; sourceTree = "<group>"; };
 		E477C9ED2B81EAB400D3DDB9 /* WeatherFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherFetch.swift; sourceTree = "<group>"; };
+		E477C9F02B83411000D3DDB9 /* weatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weatherModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,7 +125,7 @@
 		E477C8952B71413600D3DDB9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				E477C8B12B720C4700D3DDB9 /* Alarm */,
+				E477C9EF2B83410500D3DDB9 /* weather */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -145,7 +141,6 @@
 		E477C8992B71422400D3DDB9 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				E477C8AA2B7150F100D3DDB9 /* AlarmTableViewCell.swift */,
 				E477C8822B713F4700D3DDB9 /* MainViewController.swift */,
 				E477C89A2B71423100D3DDB9 /* MainViewModel.swift */,
 			);
@@ -169,15 +164,6 @@
 			path = SaveTime;
 			sourceTree = "<group>";
 		};
-		E477C8B12B720C4700D3DDB9 /* Alarm */ = {
-			isa = PBXGroup;
-			children = (
-				E477C8B22B720C5000D3DDB9 /* AlarmModel.swift */,
-				E477C8B42B73781300D3DDB9 /* AddAlarmModel.swift */,
-			);
-			path = Alarm;
-			sourceTree = "<group>";
-		};
 		E477C9E42B7F566100D3DDB9 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -193,6 +179,14 @@
 				E477C9ED2B81EAB400D3DDB9 /* WeatherFetch.swift */,
 			);
 			path = Service;
+			sourceTree = "<group>";
+		};
+		E477C9EF2B83410500D3DDB9 /* weather */ = {
+			isa = PBXGroup;
+			children = (
+				E477C9F02B83411000D3DDB9 /* weatherModel.swift */,
+			);
+			path = weather;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -280,14 +274,12 @@
 				E477C87F2B713F4700D3DDB9 /* AppDelegate.swift in Sources */,
 				E477C8AE2B71516100D3DDB9 /* SaveTimeViewController.swift in Sources */,
 				E477C8812B713F4700D3DDB9 /* SceneDelegate.swift in Sources */,
-				E477C8B32B720C5000D3DDB9 /* AlarmModel.swift in Sources */,
 				E477C9EE2B81EAB400D3DDB9 /* WeatherFetch.swift in Sources */,
-				E477C8B52B73781300D3DDB9 /* AddAlarmModel.swift in Sources */,
 				E477C8B02B71516B00D3DDB9 /* SaveTimeViewModel.swift in Sources */,
 				E477C89D2B7142B500D3DDB9 /* Color+Extensioin.swift in Sources */,
 				E477C9E82B7F568A00D3DDB9 /* LoginViewModel.swift in Sources */,
 				E477C89B2B71423100D3DDB9 /* MainViewModel.swift in Sources */,
-				E477C8AB2B7150F100D3DDB9 /* AlarmTableViewCell.swift in Sources */,
+				E477C9F12B83411000D3DDB9 /* weatherModel.swift in Sources */,
 				E477C9E62B7F568300D3DDB9 /* LoginViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

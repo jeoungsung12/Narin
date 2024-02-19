@@ -12,18 +12,20 @@ import RxCocoa
 import CoreLocation
 
 class WeatherFetch {
-    static func weatherFetch(location : CLLocation) -> Observable<Void>{
+    static func weatherFetch(location : CLLocation) -> Observable<weatherModel>{
         return Observable.create { observer in
             Task {
                 do {
                     let weather = try await WeatherService.shared.weather(for: location)
-                    
-                    print("Temp: \(weather.currentWeather.temperature)")
-                    print("최고기온: \(String(describing: weather.dailyForecast.first?.highTemperature))")
-                    print("최저기온: \(String(describing: weather.dailyForecast.first?.lowTemperature))")
-                    print("symbol: \(weather.currentWeather.symbolName)")
-                    
-                    
+                    if let highTemperature = weather.dailyForecast.first?.highTemperature,
+                       let lowTemperature = weather.dailyForecast.first?.lowTemperature{
+                        let temperature = weather.currentWeather.temperature
+                        let Temp = String(describing: temperature)
+                        let HighTemp = String(describing:highTemperature)
+                        let LowTemp = String(describing:lowTemperature)
+                        let symbol = weather.currentWeather.symbolName
+                        observer.onNext(weatherModel(Temp: Temp, HighTemp: HighTemp, LowTemp: LowTemp, symbol: symbol))
+                    } else {}
                 } catch {
                     print(String(describing: error))
                 }

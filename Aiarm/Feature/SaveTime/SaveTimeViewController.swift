@@ -13,7 +13,7 @@ import UIKit
 
 class SaveTimeViewController : UIViewController {
     private let disposeBag = DisposeBag()
-    private let addAlarmViewModel = SaveTimeViewModel(mainViewModel: MainViewModel())
+    private let saveTimeViewModel = SaveTimeViewModel()
     //저장버튼
     private let saveBtn : UIBarButtonItem = {
         let btn = UIBarButtonItem(title: "저장", style: .plain, target: SaveTimeViewController.self, action: nil)
@@ -87,6 +87,11 @@ extension SaveTimeViewController {
         saveBtn.rx.tap
             .subscribe(onNext: {[weak self] in
                 guard let self = self else {return}
+                // 선택한 시간을 데이터 포맷으로 변환
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "a h:mm"
+                let selectedTime = dateFormatter.string(from: self.alarmSetting.date)
+                self.saveTimeViewModel.inputTrigger.onNext(selectedTime)
                 navigationController?.pushViewController(MainViewController(), animated: true)
             })
             .disposed(by: disposeBag)

@@ -29,6 +29,10 @@ class LoginViewController : UIViewController{
         btn.cornerRadius = 10
         return btn
     }()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.hidesBackButton = true
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .keyColor
