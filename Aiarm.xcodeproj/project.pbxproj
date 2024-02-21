@@ -25,6 +25,9 @@
 		E477C9E82B7F568A00D3DDB9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9E72B7F568A00D3DDB9 /* LoginViewModel.swift */; };
 		E477C9EE2B81EAB400D3DDB9 /* WeatherFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9ED2B81EAB400D3DDB9 /* WeatherFetch.swift */; };
 		E477C9F12B83411000D3DDB9 /* weatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E477C9F02B83411000D3DDB9 /* weatherModel.swift */; };
+		E4FF8DB52B86169B00FDBF85 /* test.wav in Resources */ = {isa = PBXBuildFile; fileRef = E4FF8DB42B86169B00FDBF85 /* test.wav */; };
+		E4FF8DB72B8620FA00FDBF85 /* test_h.wav in Resources */ = {isa = PBXBuildFile; fileRef = E4FF8DB62B8620FA00FDBF85 /* test_h.wav */; };
+		E4FF8DB92B8621FE00FDBF85 /* 차승원.wav in Resources */ = {isa = PBXBuildFile; fileRef = E4FF8DB82B8621FE00FDBF85 /* 차승원.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +48,9 @@
 		E477C9E92B80A1C800D3DDB9 /* Aiarm.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Aiarm.entitlements; sourceTree = "<group>"; };
 		E477C9ED2B81EAB400D3DDB9 /* WeatherFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherFetch.swift; sourceTree = "<group>"; };
 		E477C9F02B83411000D3DDB9 /* weatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = weatherModel.swift; sourceTree = "<group>"; };
+		E4FF8DB42B86169B00FDBF85 /* test.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = test.wav; path = ../../../test.wav; sourceTree = "<group>"; };
+		E4FF8DB62B8620FA00FDBF85 /* test_h.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = test_h.wav; path = ../../../../Downloads/test_h.wav; sourceTree = "<group>"; };
+		E4FF8DB82B8621FE00FDBF85 /* 차승원.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = "차승원.wav"; path = "../../../차승원.wav"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,9 @@
 		E477C8922B71406000D3DDB9 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				E4FF8DB82B8621FE00FDBF85 /* 차승원.wav */,
+				E4FF8DB62B8620FA00FDBF85 /* test_h.wav */,
+				E4FF8DB42B86169B00FDBF85 /* test.wav */,
 				E477C8932B71407800D3DDB9 /* Delegate */,
 				E477C88C2B713F4900D3DDB9 /* Info.plist */,
 				E477C8892B713F4900D3DDB9 /* LaunchScreen.storyboard */,
@@ -257,8 +266,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4FF8DB52B86169B00FDBF85 /* test.wav in Resources */,
 				E477C88B2B713F4900D3DDB9 /* LaunchScreen.storyboard in Resources */,
 				E477C8882B713F4900D3DDB9 /* Assets.xcassets in Resources */,
+				E4FF8DB72B8620FA00FDBF85 /* test_h.wav in Resources */,
+				E4FF8DB92B8621FE00FDBF85 /* 차승원.wav in Resources */,
 				E477C8982B71418500D3DDB9 /* Color.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,7 +10,8 @@ import RxSwift
 import RxCocoa
 import SnapKit
 import CoreLocation
-class MainViewController: UIViewController, CLLocationManagerDelegate {
+import AVFoundation
+class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
     private let disposeBag = DisposeBag()
     private let mainViewModel = MainViewModel()
     private let locationManager = CLLocationManager()
@@ -114,6 +115,13 @@ class MainViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("알림 권한이 사용자에게 성공적으로 허용되었습니다.")
+            } else {
+                print("사용자가 알림 권한을 거부했습니다.")
+            }
+        }
         setLayout()
         setBinding()
     }
@@ -264,7 +272,6 @@ extension MainViewController {
             locationManager.requestLocation()
         }
     }
-    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to find user's location: \(error.localizedDescription)")
     }

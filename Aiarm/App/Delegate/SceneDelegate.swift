@@ -6,11 +6,12 @@
 //
 
 import UIKit
-
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+import UserNotifications
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCenterDelegate{
 
     var window: UIWindow?
-
+    var timer: Timer?
+    let userDefaults = UserDefaults.standard
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
@@ -21,36 +22,74 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible() //화면에 보이게끔
         window?.windowScene = windowScene
+        UNUserNotificationCenter.current().delegate = self
+        startBackgroundTimer()
     }
-
     func sceneDidDisconnect(_ scene: UIScene) {
-        // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
-        // Release any resources associated with this scene that can be re-created the next time the scene connects.
-        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
-        // Called when the scene has moved from an inactive state to an active state.
-        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        // Called when the scene will move from an active state to an inactive state.
-        // This may occur due to temporary interruptions (ex. an incoming phone call).
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        // Called as the scene transitions from the background to the foreground.
-        // Use this method to undo the changes made on entering the background.
+        timer?.invalidate() //타이머 중지
+        timer = nil
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
-        // Called as the scene transitions from the foreground to the background.
-        // Use this method to save data, release shared resources, and store enough scene-specific state information
-        // to restore the scene back to its current state.
+        sendLocalNotification()
+        print("백그라운드 시작")
     }
-
-
+    
+    @objc func checkTime() {
+        print("타임 체크시작")
+        guard let savedTime = userDefaults.string(forKey: "SaveTime") else { return }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "a h:mm"
+        let currentTime = dateFormatter.string(from: Date())
+        
+        if currentTime == savedTime {
+            sendLocalNotification()
+        }
+    }
+    func sendLocalNotification() {
+        guard let savedTime = userDefaults.string(forKey: "SaveTime") else { return }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "a h:mm"
+        guard let date = dateFormatter.date(from: savedTime) else {
+            print("Failed to convert saved time to Date object")
+            return
+        }
+        let content = UNMutableNotificationContent()
+        content.title = "나린"
+        content.body = "오늘의 날씨 알림입니다."
+        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: "차승원.wav"))
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: date)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: true)
+        let request = UNNotificationRequest(identifier: "notification", content: content, trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Failed to schedule local notification: \(error.localizedDescription)")
+            } else {
+                print("Local notification scheduled successfully")
+            }
+        }
+    }
+    func startBackgroundTimer() {
+        print("타이머 시작")
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(checkTime), userInfo: nil, repeats: true)
+            RunLoop.current.add(timer!, forMode: .common)
+    }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print("알람 수신")
+        completionHandler()
+    }
 }
 
