@@ -19,15 +19,17 @@ class WeatherFetch {
                     let weather = try await WeatherService.shared.weather(for: location)
                     let koreanSymbols = weather.dailyForecast.compactMap { translateSymbolName($0.symbolName) }
                     let koreanDates = weather.dailyForecast.compactMap { $0.date }
+                    let koreanHighTemp = weather.dailyForecast.compactMap { $0.highTemperature }
+                    let koreanLowTemp = weather.dailyForecast.compactMap { $0.lowTemperature }
                     var saveWeather: [String: String] = [:]
 
                     let dateFormatter = DateFormatter()
                     dateFormatter.dateFormat = "yyyy-MM-dd"
 
                     for i in 0..<min(koreanSymbols.count, koreanDates.count) {
-                        let symbol = koreanSymbols[i]
                         let date = dateFormatter.string(from: koreanDates[i])
-                        saveWeather[date] = symbol
+                        let alert = "최저 \(koreanLowTemp[i]) ~ 최고 \(koreanHighTemp[i]) \(koreanSymbols[i])"
+                        saveWeather[date] = alert
                     }
                     UserDefaults.standard.removeObject(forKey: "WeatherForecast")
                     UserDefaults.standard.set(saveWeather, forKey: "WeatherForecast")

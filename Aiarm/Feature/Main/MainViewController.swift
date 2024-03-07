@@ -121,6 +121,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
         self.view.backgroundColor = .pointColor
         self.navigationItem.hidesBackButton = true
         locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyThreeKilometers
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in

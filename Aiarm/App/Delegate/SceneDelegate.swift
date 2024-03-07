@@ -58,7 +58,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, UNUserNotificationCente
             if let weather = weatherDictionary[today] {
                 let content = UNMutableNotificationContent()
                 content.title = "나린"
-                content.body = "오늘의 날씨는 \(weather)입니다."
+                content.body = "\(weather)"
                 content.sound = UNNotificationSound.default
                 let calendar = Calendar.current
                 let components = calendar.dateComponents([.hour, .minute], from: date)
