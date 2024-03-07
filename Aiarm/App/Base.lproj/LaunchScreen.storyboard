@@ -12,28 +12,50 @@
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="Ze5-6b-2t3">
+                    <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="AppLogo" translatesAutoresizingMaskIntoConstraints="NO" id="YfJ-ci-Jvx">
-                                <rect key="frame" x="0.0" y="236" width="393" height="360"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AppLogo" translatesAutoresizingMaskIntoConstraints="NO" id="bf1-XF-MF8">
+                                <rect key="frame" x="0.0" y="246" width="393" height="360"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="160" id="qcp-Ma-6I3"/>
+                                    <constraint firstAttribute="height" constant="360" id="hBg-pr-oj1"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" Weather" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IBa-LQ-GFr">
+                                <rect key="frame" x="0.0" y="656" width="393" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="KWr-sb-2po"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="https://weatherkit.apple.com/legal-attribution.html" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TaC-zX-bmM">
+                                <rect key="frame" x="0.0" y="696" width="393" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="uf2-Hb-94l"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" name="keyColor"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="YfJ-ci-Jvx" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="50c-x1-NdR"/>
-                            <constraint firstItem="YfJ-ci-Jvx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="BT3-AO-vvo"/>
-                            <constraint firstItem="YfJ-ci-Jvx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="177" id="O5L-65-ZWr"/>
-                            <constraint firstItem="YfJ-ci-Jvx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="O7R-UW-lxO"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="YfJ-ci-Jvx" secondAttribute="trailing" id="OYg-6W-awL"/>
-                            <constraint firstItem="YfJ-ci-Jvx" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="fZ4-qu-1aB"/>
-                            <constraint firstItem="YfJ-ci-Jvx" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="sQl-ZA-s5J"/>
+                            <constraint firstItem="bf1-XF-MF8" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="61d-DP-2Rd"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="bf1-XF-MF8" secondAttribute="trailing" id="74f-dD-uCH"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="IBa-LQ-GFr" secondAttribute="trailing" id="GHg-Bg-3OW"/>
+                            <constraint firstItem="bf1-XF-MF8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="NSd-FV-uug"/>
+                            <constraint firstItem="IBa-LQ-GFr" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RdO-Eq-1C2"/>
+                            <constraint firstItem="bf1-XF-MF8" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="SMc-7V-zK0"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="TaC-zX-bmM" secondAttribute="trailing" id="gCU-Cf-26G"/>
+                            <constraint firstItem="TaC-zX-bmM" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="lhi-xm-LLX"/>
+                            <constraint firstItem="bf1-XF-MF8" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="vTI-Wf-Ave"/>
+                            <constraint firstItem="TaC-zX-bmM" firstAttribute="top" secondItem="IBa-LQ-GFr" secondAttribute="bottom" constant="20" id="w0Z-OG-DoF"/>
+                            <constraint firstItem="IBa-LQ-GFr" firstAttribute="top" secondItem="bf1-XF-MF8" secondAttribute="bottom" constant="50" id="y3y-gn-e6o"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -45,7 +67,7 @@
     <resources>
         <image name="AppLogo" width="375" height="360"/>
         <namedColor name="keyColor">
-            <color red="0.38431372549019605" green="0.74117647058823533" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.38400000333786011" green="0.74099999666213989" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

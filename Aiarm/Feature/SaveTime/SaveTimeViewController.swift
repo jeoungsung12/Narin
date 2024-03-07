@@ -35,7 +35,7 @@ class SaveTimeViewController : UIViewController {
         text.textAlignment = .left
         text.isEditable = false
         text.textColor = .gray
-        text.text = "매일 날씨 알림을 받을 수 있습니다.\n알림을 받을 시간을 선택하세요!"
+        text.text = "알림을 받기 위해서는 설정에서 날씨 알림 허용이 필요합니다.\n\n알림을 받을 시간을 선택하세요!"
         text.font = UIFont.boldSystemFont(ofSize: 15)
         return text
     }()

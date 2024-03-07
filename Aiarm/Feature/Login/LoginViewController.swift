@@ -44,14 +44,6 @@ class LoginViewController : UIViewController, CLLocationManagerDelegate, UNUserN
         locationManager.delegate = self
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-            if granted {
-                print("알림 권한이 사용자에게 성공적으로 허용되었습니다.")
-            } else {
-                print("사용자가 알림 권한을 거부했습니다.")
-                self.Alert()
-            }
-        }
         setLayout()
         setBinding()
     }
@@ -75,36 +67,34 @@ extension LoginViewController {
 //MARK: - Binding
 extension LoginViewController {
     private func setBinding() {
-        startBtn.rx.tap
-            .subscribe { _ in
-                UserDefaults.standard.set("Success", forKey: "Auth")
-                self.navigationController?.pushViewController(SaveTimeViewController(), animated: true)
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if granted {
+                print("알림 권한이 사용자에게 성공적으로 허용되었습니다.")
+                self.startBtn.rx.tap
+                    .subscribe { _ in
+                        UserDefaults.standard.set("Success", forKey: "Auth")
+                        self.navigationController?.pushViewController(SaveTimeViewController(), animated: true)
+                    }
+                    .disposed(by: self.disposeBag)
+            } else {
+                print("사용자가 알림 권한을 거부했습니다.")
+                self.startBtn.rx.tap
+                    .subscribe { _ in
+                        UserDefaults.standard.set("Success", forKey: "Auth")
+                        self.navigationController?.pushViewController(MainViewController(), animated: true)
+                    }
+                    .disposed(by: self.disposeBag)
             }
-            .disposed(by: disposeBag)
+        }
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.first {
             print("\(location)")
         }else{
-            self.Alert()
+            print("Location not available. Defaulting to Seoul")
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to find user's location: \(error.localizedDescription)")
-        self.Alert()
-    }
-    func Alert() {
-        let Alert = UIAlertController(title: "알림/시간 허용", message: "날씨 예측/알림 위해 위치정보 및 알림 허용이 필요합니다.", preferredStyle: .alert)
-        let Ok = UIAlertAction(title: "확인", style: .default){ _ in
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                    if UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    }
-                }
-        }
-        let cancel = UIAlertAction(title: "취소", style: .destructive)
-        Alert.addAction(Ok)
-        Alert.addAction(cancel)
-        self.present(Alert, animated: true)
     }
 }

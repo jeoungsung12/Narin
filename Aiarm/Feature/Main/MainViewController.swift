@@ -101,6 +101,14 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
         view.backgroundColor = .white
         return view
     }()
+    private let appleWeatherText : UITextView = {
+        let view = UITextView()
+        view.text = " Weather\n\nhttps://weatherkit.apple.com/legal-attribution.html"
+        view.textColor = .gray
+        view.font = UIFont.boldSystemFont(ofSize: 10)
+        view.textAlignment = .center
+        return view
+    }()
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.hidesBackButton = true
@@ -120,7 +128,6 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
                 print("알림 권한이 사용자에게 성공적으로 허용되었습니다.")
             } else {
                 print("사용자가 알림 권한을 거부했습니다.")
-                self.AccAlert()
             }
         }
         setLayout()
@@ -145,13 +152,20 @@ extension MainViewController {
         AddDailyStackView()
         dailyView.addSubview(dailyScrollView)
         dailyTitle.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(30)
+            make.leading.equalToSuperview().inset(30)
             make.height.equalTo(30)
+            make.top.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-10)
         }
         dailyScrollView.snp.makeConstraints { make in
             make.top.equalTo(dailyTitle.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(30)
-            make.bottom.equalToSuperview().inset(0)
+            make.bottom.equalToSuperview().offset(-70)
+        }
+        dailyView.addSubview(appleWeatherText)
+        appleWeatherText.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview().inset(10)
+            make.top.equalTo(dailyScrollView.snp.bottom).offset(0)
         }
         self.view.addSubview(dailyView)
         
@@ -227,7 +241,7 @@ extension MainViewController {
     }
     @objc func Alert() {
         let Alert = UIAlertController(title: "설정", message: nil, preferredStyle: .alert)
-        let timeChange = UIAlertAction(title: "시간 변경", style: .default){ _ in
+        let timeChange = UIAlertAction(title: "시간 변경",style: .default){ _ in
             self.navigationController?.pushViewController(SaveTimeViewController(), animated: true)
         }
         let cancel = UIAlertAction(title: "취소", style: .destructive)
@@ -271,25 +285,19 @@ extension MainViewController {
         if let location = locations.first {
             mainViewModel.inputTrigger.onNext(location)
         }else{
-            self.AccAlert()
+            let seoulLatitude: CLLocationDegrees = 37.5665
+            let seoulLongitude: CLLocationDegrees = 126.9780
+            let seoulLocation = CLLocation(latitude: seoulLatitude, longitude: seoulLongitude)
+            mainViewModel.inputTrigger.onNext(seoulLocation)
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to find user's location: \(error.localizedDescription)")
-        self.AccAlert()
-    }
-    func AccAlert() {
-        let Alert = UIAlertController(title: "알림/시간 허용", message: "날씨 예측/알림 위해 위치정보 및 알림 허용이 필요합니다.", preferredStyle: .alert)
-        let Ok = UIAlertAction(title: "확인", style: .default){ _ in
-            if let url = URL(string: UIApplication.openSettingsURLString) {
-                    if UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    }
-                }
-        }
-        let cancel = UIAlertAction(title: "취소", style: .destructive)
-        Alert.addAction(Ok)
-        Alert.addAction(cancel)
-        self.present(Alert, animated: true)
+        let seoulLatitude: CLLocationDegrees = 37.5665
+        let seoulLongitude: CLLocationDegrees = 126.9780
+        let seoulLocation = CLLocation(latitude: seoulLatitude, longitude: seoulLongitude)
+        mainViewModel.inputTrigger.onNext(seoulLocation)
+        self.dailyTitle.text = "정확한 예측을 위해 위치정보 허용이 필요합니다."
+        print("Defaulting to Seoul: \(seoulLocation)")
     }
 }
