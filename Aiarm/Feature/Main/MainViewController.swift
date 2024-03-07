@@ -21,19 +21,12 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
         view.style = .large
         return view
     }()
-    //설정 버튼
-    private let settingBtn : UIBarButtonItem = {
-        let setting = UIButton()
-        setting.tintColor = .gray
-        setting.setImage(UIImage(systemName: "gearshape.fill"), for: .normal)
-        let btn = UIBarButtonItem(customView: setting)
-        return btn
-    }()
     //오늘의 요일
     private let date : UILabel = {
         let label = UILabel()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "EEEE, dd"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
         let currentDate = Date()
         let dateString = dateFormatter.string(from: currentDate)
         label.text = dateString
@@ -83,16 +76,16 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
         return label
     }()
     //목소리 선택타이틀
-    private let voiceTitle : UILabel = {
+    private let dailyTitle : UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = .gray
         label.backgroundColor = .white
-        label.text = "알림을 받을 목소리를 선택하세요!"
+        label.text = "날씨"
         return label
     }()
     //목소리 스크롤
-    private let voiceScrollView : UIScrollView = {
+    private let dailyScrollView : UIScrollView = {
         let view = UIScrollView()
         view.backgroundColor = .white
         view.isScrollEnabled = true
@@ -100,7 +93,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
         return view
     }()
     //목소리 스택
-    private let voiceStackView : UIStackView = {
+    private let dailyStackView : UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
         view.distribution = .equalCentering
@@ -108,8 +101,15 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
         view.backgroundColor = .white
         return view
     }()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.hidesBackButton = true
+    }
     override func viewDidLoad() {
-        super.viewDidLoad()
+        super.viewDidLoad()// 설정 버튼 생성
+        let settingBtn = UIBarButtonItem(image: UIImage(systemName: "gearshape.fill"), style: .plain, target: self, action: #selector(Alert))
+        self.navigationController?.navigationBar.tintColor = .gray
+        self.navigationItem.rightBarButtonItem = settingBtn
         self.view.backgroundColor = .pointColor
         self.navigationItem.hidesBackButton = true
         locationManager.delegate = self
@@ -120,6 +120,7 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
                 print("알림 권한이 사용자에게 성공적으로 허용되었습니다.")
             } else {
                 print("사용자가 알림 권한을 거부했습니다.")
+                self.AccAlert()
             }
         }
         setLayout()
@@ -130,7 +131,6 @@ class MainViewController: UIViewController, CLLocationManagerDelegate, UNUserNot
 extension MainViewController {
     private func setLayout() {
         //추가버튼과 수정버튼 설정
-        self.navigationItem.rightBarButtonItem = settingBtn
         self.view.addSubview(date)
         self.view.addSubview(temprange)
         self.view.addSubview(weather)
@@ -139,21 +139,21 @@ extension MainViewController {
         self.view.addSubview(location)
         
         //목소리 뷰
-        let VoiceView = UIView()
-        VoiceView.backgroundColor = .white
-        VoiceView.addSubview(voiceTitle)
-        AddVoiceStackView()
-        VoiceView.addSubview(voiceScrollView)
-        voiceTitle.snp.makeConstraints { make in
+        let dailyView = UIView()
+        dailyView.backgroundColor = .white
+        dailyView.addSubview(dailyTitle)
+        AddDailyStackView()
+        dailyView.addSubview(dailyScrollView)
+        dailyTitle.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().inset(30)
             make.height.equalTo(30)
         }
-        voiceScrollView.snp.makeConstraints { make in
-            make.top.equalTo(voiceTitle.snp.bottom).offset(20)
+        dailyScrollView.snp.makeConstraints { make in
+            make.top.equalTo(dailyTitle.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(30)
             make.bottom.equalToSuperview().inset(0)
         }
-        self.view.addSubview(VoiceView)
+        self.view.addSubview(dailyView)
         
         date.snp.makeConstraints { make in
             make.height.equalTo(50)
@@ -168,11 +168,11 @@ extension MainViewController {
         weather.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(30)
             make.height.equalTo(50)
-            make.top.equalTo(temprange.snp.bottom).offset(50)
+            make.top.equalTo(temprange.snp.bottom).offset(30)
         }
         weatherImage.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(0)
-            make.height.equalTo(160)
+            make.height.equalTo(130)
             make.center.equalToSuperview()
         }
         loadingIndicator.snp.makeConstraints { make in
@@ -185,31 +185,44 @@ extension MainViewController {
             make.leading.equalToSuperview().offset(30)
             make.height.equalTo(20)
         }
-        VoiceView.snp.makeConstraints { make in
+        dailyView.snp.makeConstraints { make in
             make.top.equalTo(location.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalToSuperview().inset(0)
             make.height.equalTo(200)
         }
         self.loadingIndicator.startAnimating()
     }
-    private func AddVoiceStackView() {
-        let voiceList : [String] = ["아이유","수지","지디","김민석"]
-        let btnColors : [UIColor] = [.voiceColor1,.voiceColor2,.voiceColor3,.voiceColor4,.pointColor]
-        var index = 0
-        voiceList.forEach { voice in
-            let Button = UIButton()
-            Button.backgroundColor = btnColors[index]
-            index += 1
-            Button.setTitle(voice, for: .normal)
-            Button.setTitleColor(.darkGray, for: .normal)
-            Button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-            Button.layer.cornerRadius = 20
-            Button.snp.makeConstraints { make in make.width.height.equalTo(70) }
-            voiceStackView.addArrangedSubview(Button)
+    private func AddDailyStackView() {
+        for _ in 0...7 {
+            let View = UIView()
+            View.backgroundColor = .white
+            let label = UILabel()
+            label.font = UIFont.boldSystemFont(ofSize: 15)
+            label.textColor = .gray
+            label.backgroundColor = .white
+            label.textAlignment = .center
+            let imageView = UIImageView()
+            imageView.contentMode = .scaleAspectFit
+            imageView.backgroundColor = .white
+            View.addSubview(imageView)
+            View.addSubview(label)
+            imageView.snp.makeConstraints { make in
+                make.width.height.equalTo(40)
+                make.top.leading.trailing.equalToSuperview().inset(0)
+            }
+            label.snp.makeConstraints { make in
+                make.top.equalTo(imageView.snp.bottom).offset(10)
+                make.leading.trailing.equalToSuperview().inset(0)
+            }
+            dailyStackView.addArrangedSubview(View)
+            View.snp.makeConstraints { make in
+                make.width.height.equalTo(70)
+            }
         }
-        voiceScrollView.addSubview(voiceStackView)
-        voiceStackView.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview().inset(0)
+        dailyScrollView.addSubview(dailyStackView)
+        dailyStackView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(10)
+            make.trailing.top.bottom.equalToSuperview().inset(0)
         }
     }
     @objc func Alert() {
@@ -217,12 +230,8 @@ extension MainViewController {
         let timeChange = UIAlertAction(title: "시간 변경", style: .default){ _ in
             self.navigationController?.pushViewController(SaveTimeViewController(), animated: true)
         }
-        let logout = UIAlertAction(title: "로그아웃", style: .default){ _ in
-            self.navigationController?.pushViewController(LoginViewController(), animated: true)
-        }
         let cancel = UIAlertAction(title: "취소", style: .destructive)
         Alert.addAction(timeChange)
-        Alert.addAction(logout)
         Alert.addAction(cancel)
         self.present(Alert, animated: true)
     }
@@ -230,28 +239,23 @@ extension MainViewController {
 //MARK: - 바인딩 설정
 extension MainViewController {
     private func setBinding() {
-        voiceStackView.subviews.compactMap { $0 as? UIButton }.forEach { button in
-            button.rx.tap
-                .subscribe(onNext: { _ in
-                    guard (button.titleLabel?.text) != nil else { return }
-                    button.layer.shadowColor = UIColor.gray.cgColor
-                    button.layer.shadowOffset = CGSize(width: 5, height: 5)
-                    button.layer.shadowOpacity = 5
-                })
-                .disposed(by: disposeBag)
-        }
-        if let button = settingBtn.customView as? UIButton {
-            button.rx.tap
-                .subscribe(onNext: { [weak self] in
-                    self?.Alert()
-                })
-                .disposed(by: disposeBag)
-        }
         mainViewModel.outputResult.subscribe(onNext: { result in
             DispatchQueue.main.async {
                 self.temprange.text = "최고 \(result.HighTemp)\n최저 \(result.LowTemp)"
                 self.weather.text = "\(result.Temp)"
                 self.weatherImage.image = UIImage(systemName: "\(result.symbol)")
+                for (index, subview) in self.dailyStackView.arrangedSubviews.enumerated() {
+                    for subview in subview.subviews {
+                        if let label = subview as? UILabel {
+                            let format = DateFormatter()
+                            format.dateFormat = "MM.dd"
+                            let day = format.string(from: result.dates[index])
+                            label.text = day
+                        } else if let imageView = subview as? UIImageView {
+                            imageView.image = UIImage(systemName: result.symbolNames[index])
+                        }
+                    }
+                }
                 self.loadingIndicator.stopAnimating()
             }
         })
@@ -267,12 +271,25 @@ extension MainViewController {
         if let location = locations.first {
             mainViewModel.inputTrigger.onNext(location)
         }else{
-            //에러가 났을 경우 다시 요청
-            locationManager.requestWhenInUseAuthorization()
-            locationManager.requestLocation()
+            self.AccAlert()
         }
     }
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Failed to find user's location: \(error.localizedDescription)")
+        self.AccAlert()
+    }
+    func AccAlert() {
+        let Alert = UIAlertController(title: "알림/시간 허용", message: "날씨 예측/알림 위해 위치정보 및 알림 허용이 필요합니다.", preferredStyle: .alert)
+        let Ok = UIAlertAction(title: "확인", style: .default){ _ in
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(url) {
+                        UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    }
+                }
+        }
+        let cancel = UIAlertAction(title: "취소", style: .destructive)
+        Alert.addAction(Ok)
+        Alert.addAction(cancel)
+        self.present(Alert, animated: true)
     }
 }

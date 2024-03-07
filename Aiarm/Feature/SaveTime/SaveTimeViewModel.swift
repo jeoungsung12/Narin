@@ -20,6 +20,7 @@ class SaveTimeViewModel {
     }
     func setBinding() {
         inputTrigger.subscribe(onNext: { selectedTime in
+            UserDefaults.standard.removeObject(forKey: "SaveTime")
             UserDefaults.standard.setValue(selectedTime, forKey: "SaveTime")
         })
         .disposed(by: disposeBag)

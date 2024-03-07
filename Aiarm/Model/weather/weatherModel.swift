@@ -12,4 +12,6 @@ struct weatherModel {
     let HighTemp : String
     let LowTemp : String
     let symbol : String
+    let dates : [Date]
+    let symbolNames : [String]
 }

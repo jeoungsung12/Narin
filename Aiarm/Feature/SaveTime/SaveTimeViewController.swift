@@ -35,7 +35,7 @@ class SaveTimeViewController : UIViewController {
         text.textAlignment = .left
         text.isEditable = false
         text.textColor = .gray
-        text.text = "알림을 받을 시간을 선택하세요!\n\n매일 자정 기상에 맞게 목소리가 업데이트 됩니다!\n(알림 이용 불가 시간 : 자정 ~ 05시)"
+        text.text = "매일 날씨 알림을 받을 수 있습니다.\n알림을 받을 시간을 선택하세요!"
         text.font = UIFont.boldSystemFont(ofSize: 15)
         return text
     }()
@@ -49,6 +49,10 @@ class SaveTimeViewController : UIViewController {
         date.layer.masksToBounds = true
         return date
     }()
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationItem.hidesBackButton = true
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
